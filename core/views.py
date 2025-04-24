@@ -29,3 +29,19 @@ def approve_absence(request, absence_id):
         absence.save()
         return redirect('home')
     return render(request, 'approve_absence.html', {'absence': absence})
+
+def login_view(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('home')
+        else:
+            return render(request, 'login.html', {'form': {}})
+    return render(request, 'login.html')
+
+@login_required
+def home(request):
+    return render(request, 'home.html')
